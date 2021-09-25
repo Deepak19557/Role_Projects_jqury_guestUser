@@ -1,5 +1,10 @@
 
 <h1><%= current_user.role %> Appointments</h1>
+
+<% if current_user.role == 'Patient' %>
+  <%= link_to 'New Appointment', new_appointment_path %><br>
+  <% end %> 
+
 <div id="app">
 <table border="2">
   <thead>
@@ -17,10 +22,21 @@
     <% @appointments.each do |appointment| %>
       <tr>
         <td><%= appointment.id %></td>
-        <td><%= current_user.name %></td>
+        <% if current_user.role == 'Patient' %>
+          <td><%= current_user.name %></td>
+        <% elsif current_user.role == 'Doctor' %>
+        <% user = User.find(appointment.user_id) %>
+
+        <td> <%= user.name %> </td>
+        <% end %>
+
+
         <% doc = Doctor.find(appointment.doctor_id) %>
         <td><%= doc.name %></td>
         <td><%= appointment.day %></td>
+        <% if current_user.role == 'Doctor' %>
+       <td> <%= button_to 'update', edit_appointment_path(appointment.id) ,method: :get %></td>
+        <% end %>
         <td><%= button_to 'cancel Appoitment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do u want to cancel appointment"} %></td>
       </tr>
     <% end %>
@@ -29,10 +45,13 @@
 </div>
 <br>
 
-<%= link_to 'New Appointment', new_appointment_path %><br>
+
 
 <%#= link_to 'New Doctor', new_doctor_path %><br>
 <%#= link_to 'New Patient', new_patient_path %><br>
+
+
+
 
 <style type="text/css">
 #app{

@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :appointments
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  validates :email, presence: true, uniqueness: true
 
     after_create :creating_role
 
@@ -12,7 +13,7 @@ class User < ApplicationRecord
     	if use.role == 'Patient'
     		Patient.create(name: use.name)
     	elsif use.role == 'Doctor'
-    		Doctor.create(name: use.name)
+    		Doctor.create(name: use.name , email: use.email)
     	end
     end
 end

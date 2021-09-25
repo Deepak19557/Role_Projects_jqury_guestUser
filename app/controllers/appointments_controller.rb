@@ -1,8 +1,15 @@
 class AppointmentsController < ApplicationController
 	  
   def index
-    debugger
-    @appointments = Appointment.where(user_id: current_user.id)
+    if current_user.role == "Patient"
+      @appointments = Appointment.where(user_id: current_user.id)
+    elsif current_user.role == "Doctor"
+      doctor = Doctor.find_by(email: current_user.email)
+      @appointments = Appointment.where(doctor_id: doctor.id)
+    else
+      @appointments = Appointment.all
+      render :admin
+    end
   end
 
   def new
@@ -20,12 +27,18 @@ class AppointmentsController < ApplicationController
   end
 
   def edit
+    
     @appointment = Appointment.find(params[:id])
+
   end
 
   def update
     @appointment = Appointment.find(params[:id])
-    @appointment.update(appointment_params)
+    if @appointment.update(appointment_params)
+      redirect_to root_path
+    else
+      render 'edit'
+    end 
   end
 
   def destroy
