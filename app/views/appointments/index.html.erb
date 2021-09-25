@@ -1,0 +1,51 @@
+
+<h1><%= current_user.role %> Appointments</h1>
+<div id="app">
+<table border="2">
+  <thead>
+    <tr>
+      <th> ID</th>
+      <th>Patient</th>
+      <th>Doctor</th>
+    
+      <th>Day</th>
+     
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @appointments.each do |appointment| %>
+      <tr>
+        <td><%= appointment.id %></td>
+        <td><%= current_user.name %></td>
+        <% doc = Doctor.find(appointment.doctor_id) %>
+        <td><%= doc.name %></td>
+        <td><%= appointment.day %></td>
+        <td><%= button_to 'cancel Appoitment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do u want to cancel appointment"} %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<br>
+
+<%= link_to 'New Appointment', new_appointment_path %><br>
+
+<%#= link_to 'New Doctor', new_doctor_path %><br>
+<%#= link_to 'New Patient', new_patient_path %><br>
+
+<style type="text/css">
+#app{
+font-size: 20px;
+margin: 0px 80px;
+}
+table{
+width: 500px;
+}
+tr:nth-child(even){
+background-color: #32a8a2;
+}
+td{
+align: center;
+}
+</style>
