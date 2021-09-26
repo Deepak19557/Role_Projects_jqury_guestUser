@@ -1,20 +1,25 @@
+<% flash.each do |type, msg| %>
+  <div>
+    <%=  msg %>
+  </div>
+<% end %>
 
 <h1><%= current_user.role %> Appointments</h1>
-
 <% if current_user.role == 'Patient' %>
-  <%= link_to 'New Appointment', new_appointment_path %><br>
-  <% end %> 
+  <h3 style="text-align: center;"> You Are <%= current_user.role %></h3>
+  <h2 style="text-align: center;"><%= link_to 'Patient New Appointment', new_appointment_path %><br></h2>
+<% elsif current_user.role == 'Doctor'%>
+  <h3 style="text-align: center;">You Are <%= current_user.role %></h3>
+<% end %> 
 
 <div id="app">
-<table border="2">
+<table border="1">
   <thead>
     <tr>
       <th> ID</th>
       <th>Patient</th>
       <th>Doctor</th>
-    
       <th>Day</th>
-     
     </tr>
   </thead>
 
@@ -25,33 +30,22 @@
         <% if current_user.role == 'Patient' %>
           <td><%= current_user.name %></td>
         <% elsif current_user.role == 'Doctor' %>
-        <% user = User.find(appointment.user_id) %>
-
-        <td> <%= user.name %> </td>
+          <% user = User.find(appointment.user_id) %>
+          <td> <%= user.name %> </td>
         <% end %>
-
-
         <% doc = Doctor.find(appointment.doctor_id) %>
         <td><%= doc.name %></td>
         <td><%= appointment.day %></td>
         <% if current_user.role == 'Doctor' %>
-       <td> <%= button_to 'update', edit_appointment_path(appointment.id) ,method: :get %></td>
+          <td> <%= button_to 'update', edit_appointment_path(appointment.id) ,method: :get %></td>
+        <td><%= button_to 'cancel Appointment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do you want to cancel appointment"} %></td>
         <% end %>
-        <td><%= button_to 'cancel Appoitment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do u want to cancel appointment"} %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 </div>
 <br>
-
-
-
-<%#= link_to 'New Doctor', new_doctor_path %><br>
-<%#= link_to 'New Patient', new_patient_path %><br>
-
-
-
 
 <style type="text/css">
 #app{

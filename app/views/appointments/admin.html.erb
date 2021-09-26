@@ -1,3 +1,49 @@
-<% debugger %>
+<h3>You Are  <%= current_user.role %> You have all Rights</h3>
+<h2 style="text-align: center;"><%= link_to 'Create New Appointment', new_appointment_path %><br></h2>
+<div id="app">
+<table border="1">
+  <thead>
+    <tr>
+      <th> ID</th>
+   		<th>Patient</th>
+   		<th>Doctor</th>
+   		<th>Day</th>
+    </tr>
+  </thead>
 
 
+  <tbody>
+    <% @appointments.each do |appointment| %>
+      <tr>
+       <td> <%= appointment.id %></td>
+        <% pat = User.find(appointment.user_id) %>
+        <% doc = Doctor.find(appointment.doctor_id) %>
+        <td><%= pat.name %></td>
+
+        <td><%= doc.name %> </td>
+          <td><%= appointment.day %></td>
+         <td><%= button_to 'Edit', edit_appointment_path(appointment.id) ,method: :get %><%= button_to 'cancel Appointment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do you want to cancel appointment"} %></td> 
+        
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<br>
+
+<style type="text/css">
+#app{
+font-size: 20px;
+margin: 100px 550px;
+}
+table{
+width: 800px;
+}
+tr:nth-child(even){
+background-color: #32a8a2;
+}
+td{
+align: center;
+}
+</style>	

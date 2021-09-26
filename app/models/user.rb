@@ -9,11 +9,11 @@ class User < ApplicationRecord
     after_create :creating_role
 
     def creating_role
-    	use = User.last
-    	if use.role == 'Patient'
-    		Patient.create(name: use.name)
-    	elsif use.role == 'Doctor'
-    		Doctor.create(name: use.name , email: use.email)
+    	user = User.last
+    	if user.role == 'Patient'
+    		Patient.create(name: user.name)
+    	elsif user.role == 'Doctor'
+    		Doctor.create(name: user.name , email: user.email)
     	end
     end
 end

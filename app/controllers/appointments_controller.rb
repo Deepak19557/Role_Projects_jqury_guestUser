@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-	  
+	  load_and_authorize_resource
   def index
     if current_user.role == "Patient"
       @appointments = Appointment.where(user_id: current_user.id)
@@ -13,12 +13,15 @@ class AppointmentsController < ApplicationController
   end
 
   def new
+    @doctors = Doctor.all 
   	@appointment = Appointment.new	
   end
 
   def create
   	@appointment = Appointment.new(appointment_params)
-    @appointment.user_id = current_user.id
+    unless current_user.role == 'Admin'
+      @appointment.user_id = current_user.id
+    end
     if @appointment.save
       redirect_to root_path
     else
@@ -26,13 +29,16 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def edit
-    
-    @appointment = Appointment.find(params[:id])
+  def show
+    @aapointment = Appointment.find(params[:id])
+  end
 
+  def edit    
+    @appointment = Appointment.find(params[:id])
   end
 
   def update
+
     @appointment = Appointment.find(params[:id])
     if @appointment.update(appointment_params)
       redirect_to root_path
@@ -49,7 +55,7 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:doctor_id, :day)
+    params.require(:appointment).permit(:doctor_id, :day ,:user_id)
   end
 
 end

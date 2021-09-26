@@ -13,25 +13,21 @@
 
   <div class="field">
     <%= form.label :doctor_id %>
-    <%#= form.number_field :doctor_id %>
-    <%= form.select :doctor_id, Doctor.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+    <%= form.select :doctor_id, @doctors.collect { |p| [ p.name, p.id ] }, include_blank: true %>
   </div><br><br>
+ 
 
-  <div class="field">
-    <%#= form.label :Patient %>
-    <%#= form.text_field :name %>
-  </div>
-
-<!--   <div class="field">
-    <%= form.label :patient_id %>
-    <%#= form.number_field :patient_id %>
-    <%= form.select :doctor_id, Doctor.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
-  </div>
-<br><br> -->
+  <% if current_user.role == 'Admin' %>
+    <div class="field">
+      <% patient = User.where(role: 'Patient') %>
+   Patient:
+    <%= form.select :user_id,patient.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+  </div><br><br>
+  <% end %>
 
   <div class="field">
     <%= form.label :Day %>
-    <%= form.text_field :day %>
+    <%= form.date_field :day %>
   </div>
 <br><br>
 
