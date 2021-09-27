@@ -16,4 +16,14 @@ class User < ApplicationRecord
     		Doctor.create(name: user.name , email: user.email)
     	end
     end
+
+    # after_create :creating_role  
+    # def creating_role
+    #   user = User.last
+    #   if current_user.role == 'Patient'
+    #     Patient.create(name: user.name)
+    #   elsif current_user.role == 'Doctor'
+    #     Doctor.create(name: user.name, email: user.email)
+    #   end
+    # end
 end

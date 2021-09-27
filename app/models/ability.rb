@@ -4,10 +4,16 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    use ||= User.new
+
+    if use.role == 'Guest'
+      can [:create]
+    end
+
     if user.role == 'Admin'
       can  :manage , Appointment 
     elsif user.role == 'Patient'
-      can  [:index , :new ,:create]  ,Appointment
+      can  [:index , :new ,:create,:destroy]  ,Appointment
     elsif user.role == 'Doctor'
       can  [:index , :edit ,:update ,:destroy] , Appointment
     end

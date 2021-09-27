@@ -1,17 +1,10 @@
 <h1>page_1</h1>
-
-<%#= form_with url: "/page_1", method: :get do |form| %>
+<%#= form_with url: "/page_1", method: :post do |form| %>
   <%#= form.label :name, "Patient:" %>
-  <%#= form.text_field :name %>
+  <%#= form.text_field :name %><br><br>
+  <%#= form.fields_for :doctors do |doctor_form| %>
+    <%#= doctor_form.label :name, "Doctor:" %>
+    <%#= doctor_form.text_field :name %>
+  <%# end %><br><br>
   <%#= form.submit "Submit" %>
-<%# end %>
-
-<%= form_with url: "/page_1", method: :post do |form| %>
-  <%= form.label :name, "Patient:" %>
-  <%= form.text_field :name %><br><br>
-  <%= form.fields_for :doctors do |doctor_form| %>
-    <%= doctor_form.label :name, "Doctor:" %>
-    <%= doctor_form.text_field :name %>
-  <% end %><br><br>
-  <%= form.submit "Submit" %>
-<% end %>
+<%#end %>

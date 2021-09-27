@@ -3,23 +3,24 @@
     <%=  msg %>
   </div>
 <% end %>
-
+<% debugger %>
 <h1><%= current_user.role %> Appointments</h1>
 <% if current_user.role == 'Patient' %>
-  <h3 style="text-align: center;"> You Are <%= current_user.role %></h3>
-  <h2 style="text-align: center;"><%= link_to 'Patient New Appointment', new_appointment_path %><br></h2>
+  <h3> You Are <%= current_user.role %></h3>
+  <h2><%= link_to 'Patient New Appointment', new_appointment_path %><br></h2>
 <% elsif current_user.role == 'Doctor'%>
-  <h3 style="text-align: center;">You Are <%= current_user.role %></h3>
+  <h3>You Are <%= current_user.role %></h3>
 <% end %> 
 
-<div id="app">
+<div style="text-align: center;">
 <table border="1">
   <thead>
     <tr>
       <th> ID</th>
       <th>Patient</th>
       <th>Doctor</th>
-      <th>Day</th>
+      <th>Date</th>
+      <th>Action</th>
     </tr>
   </thead>
 
@@ -38,7 +39,8 @@
         <td><%= appointment.day %></td>
         <% if current_user.role == 'Doctor' %>
           <td> <%= button_to 'update', edit_appointment_path(appointment.id) ,method: :get %></td>
-        <td><%= button_to 'cancel Appointment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do you want to cancel appointment"} %></td>
+        <% elsif current_user.role == 'Patient'%>
+          <td><%= button_to 'cancel Appointment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do you want to cancel appointment"} %></td>
         <% end %>
       </tr>
     <% end %>
