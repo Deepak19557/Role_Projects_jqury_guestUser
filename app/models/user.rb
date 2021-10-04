@@ -13,12 +13,7 @@ class User < ApplicationRecord
    # has_secured_password
     require 'bcrypt'
     attr_reader :password
-    #include ActiveModel::SecurePassword::InstanceMethodOnActivation
-
-    # def self.new_guest
-    #   new { |u| u.guest = true }
-    # end
-
+   
     def creating_role
     	user = User.last
     	if user.role == 'Patient'
