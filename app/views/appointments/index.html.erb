@@ -3,11 +3,10 @@
     <%=  msg %>
   </div>
 <% end %>
-<% debugger %>
 <h1><%= current_user.role %> Appointments</h1>
-<% if current_user.role == 'Patient' %>
+<% if current_user.role == 'Patient' or current_user.role == 'Guest' %>
   <h3> You Are <%= current_user.role %></h3>
-  <h2><%= link_to 'Patient New Appointment', new_appointment_path %><br></h2>
+  <h2><%= link_to 'New Appointment', new_appointment_path %><br></h2>
 <% elsif current_user.role == 'Doctor'%>
   <h3>You Are <%= current_user.role %></h3>
 <% end %> 
@@ -16,11 +15,10 @@
 <table border="1">
   <thead>
     <tr>
-      <th> ID</th>
-      <th>Patient</th>
+      <th>ID</th>
+      <th>User</th>
       <th>Doctor</th>
       <th>Date</th>
-      <th>Action</th>
     </tr>
   </thead>
 
@@ -28,7 +26,7 @@
     <% @appointments.each do |appointment| %>
       <tr>
         <td><%= appointment.id %></td>
-        <% if current_user.role == 'Patient' %>
+        <% if current_user.role == 'Patient' or current_user.role == 'Guest'%>
           <td><%= current_user.name %></td>
         <% elsif current_user.role == 'Doctor' %>
           <% user = User.find(appointment.user_id) %>
@@ -38,7 +36,7 @@
         <td><%= doc.name %></td>
         <td><%= appointment.day %></td>
         <% if current_user.role == 'Doctor' %>
-          <td> <%= button_to 'update', edit_appointment_path(appointment.id) ,method: :get %></td>
+          <td> <%= button_to 'update', edit_appointment_path(appointment.id), method: :get %></td>
         <% elsif current_user.role == 'Patient'%>
           <td><%= button_to 'cancel Appointment' ,appointment_path(appointment.id),method: :delete ,data: {confirm: "Do you want to cancel appointment"} %></td>
         <% end %>
@@ -64,3 +62,6 @@ td{
 align: center;
 }
 </style>
+<div id="form">
+  <%#=render 'users/form',user:@user%>
+</div>

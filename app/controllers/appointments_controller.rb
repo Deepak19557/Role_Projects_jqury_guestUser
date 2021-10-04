@@ -1,7 +1,7 @@
 class AppointmentsController < ApplicationController
-	  load_and_authorize_resource
+	load_and_authorize_resource
   def index
-    if current_user.role == "Patient"
+    if current_user.role == "Patient" or current_user.role == 'Guest'
       @appointments = Appointment.where(user_id: current_user.id)
     elsif current_user.role == "Doctor"
       doctor = Doctor.find_by(email: current_user.email)
@@ -13,7 +13,8 @@ class AppointmentsController < ApplicationController
   end
 
   def new
-    @doctors = Doctor.all 
+    @doctors = Doctor.all
+    @patients = Patient.all 
   	@appointment = Appointment.new	
   end
 
@@ -38,7 +39,6 @@ class AppointmentsController < ApplicationController
   end
 
   def update
-
     @appointment = Appointment.find(params[:id])
     if @appointment.update(appointment_params)
       redirect_to root_path
@@ -52,10 +52,10 @@ class AppointmentsController < ApplicationController
     @destroy.destroy
     redirect_to root_path
   end
+
   private
 
   def appointment_params
     params.require(:appointment).permit(:doctor_id, :day ,:user_id)
   end
-
 end

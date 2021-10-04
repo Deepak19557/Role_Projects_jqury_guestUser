@@ -16,13 +16,10 @@
     <%= form.select :doctor_id, Doctor.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
   </div><br><br>
 
-  <% if current_user.role == 'Admin' %>
-    <div class="field">
-      <% patient = User.where(role: 'Patient') %>
-   Patient:
-    <%= form.select :user_id,patient.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+  <div class="field">
+    <%= form.label :patient_id %>
+    <%= form.select :patient_id, Patient.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
   </div><br><br>
-  <% end %>
 
   <div class="field">
     <%= form.label :Day %>

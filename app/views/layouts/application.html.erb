@@ -5,25 +5,48 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
-  
+  <% t = Time.new %>
+  <% email = "#{t.hour}" + "#{t.min}" + "#{t.sec}"+"@yopmail.com" %>
   <p class="navbar-text float-right">
   <% if user_signed_in? %><br>
-  Logged in as <strong><%= current_user.email %></strong>.
-    <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-    <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    Logged in as <strong><%= current_user.role %></strong>.
+    <% unless current_user.role == 'Guest' %>
+      <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+      <%= link_to "Logout", destroy_user_session_path, method: :delete, :class =>'navbar-link'  %>
+    <% else %>
+      <h4><%= link_to 'leave guest',destroy_user_session_path, method: :delete %></h4>
+    <% end %>
   <% else %><br>
-
-    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %>
     <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-    <h2><%= link_to 'Patient New Appointment', new_appointment_path %><br></h2>
+    <button type="button" class="next-btn" id="ipaddr">Click guest!</button>
+    <%#= button_to 'Guest User', user_registration_path(user:{name: "guest",role: "Guest", email: email, password: "123456", confirmation_password: "123456"}), :class => 'navbar-link' %>
   <% end %>
-  </p>
-
+  
+  </p> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script>
+$.getJSON("https://api.ipify.org?format=json",
+     function(data) {
+        var ip = data.ip;
+        document.getElementById("ipaddr").value = ip;
+      });
+  $("#ipaddr").click(function(){
+    var email = $("#ipaddr").val()
+    email = email.concat("@yopmail.com")
+    $.ajax({
+      type: "post",
+      url: "/users/sign_in",
+      data: {email: email,role: "Guest"},
+      success: function(response){
+    }
+  })
+})
+</script>
   <body>
     <%= yield %>
   </body>
