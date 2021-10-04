@@ -11,7 +11,7 @@ class SessionsController < Devise::SessionsController
 				sign_in @user
 				redirect_to root_path
 			else
-				User.create(email: params[:email], role: params[:role], password:"123456")
+				User.create(email: params[:email], role: params[:role], name: params[:name], password:"123456")
 				sign_in @user
 				redirect_to root_path
 			end
