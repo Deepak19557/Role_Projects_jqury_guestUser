@@ -5,7 +5,6 @@ class SessionsController < Devise::SessionsController
 	end
 
 	def create
-		debugger
 		if params[:commit].nil?
 			@user = User.find_by_email(params[:email])
 			if @user != nil
