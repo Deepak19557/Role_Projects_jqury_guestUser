@@ -41,7 +41,7 @@ $.getJSON("https://api.ipify.org?format=json",
     $.ajax({
       type: "post",
       url: "/users/sign_in",
-      data: {email: email,role: "Guest"},
+      data: {email: email,role: "Guest",name: "Guest"},
       success: function(response){
     }
   })
